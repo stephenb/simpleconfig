@@ -6,7 +6,7 @@ along with command line flags and env vars, at the same time.
 
 ## Install
 
-	go get github.com/stephenb/config
+	go get github.com/stephenb/simpleconfig
 
 
 ## Example Usage
