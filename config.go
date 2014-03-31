@@ -22,7 +22,7 @@ type Config struct {
 }
 
 func NewConfig(opts map[string]string, jsonPath string) *Config {
-	conf := Config{Options: opts, JsonPath: jsonPath}
+	conf := Config{Options: opts, JsonPath: jsonPath, Map: make(map[string]interface{})}
 	fs := flag.NewFlagSet("simpleconfig", flag.ExitOnError)
 	conf.Usage = conf.usage
 	fs.Usage = conf.usage
