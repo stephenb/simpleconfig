@@ -1,6 +1,7 @@
-# config
+# simpleconfig
 
-Simple configuration reader for Go that handles a JSON settings file along with command line flags at the same time.
+Simple configuration reader for Go that handles a JSON settings file,
+along with command line flags and env vars, at the same time.
 
 
 ## Install
@@ -50,11 +51,22 @@ running the program will yield the following output:
 
 With no CLI fags:
 
-	map[setting1:Hello setting2:World]
+	Config Map: map[setting1:Hello setting2:World]
 
 With "-another-setting=Josh" specified in the CLI flags:
 
-	map[setting1:Hello setting2:Josh]
+	Config Map: map[setting1:Hello setting2:Josh]
+
+
+Also, a basic usage explanation will be shown if you pass the "-h" CLI flag. This
+can be customized by re-implementing the Config's Usage function, similar to how
+you would customize the same Usage output in Go's own flag package.
+
+
+## NEW
+
+Now ENV vars are also read into the configuration. The order of precedence is:
+1. CLI Flags, 2. ENV Vars, 3. JSON Settings.
 
 
 ## Notes

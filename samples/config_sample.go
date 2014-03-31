@@ -10,7 +10,6 @@ func main() {
 	opts := map[string]string {
 		"setting1": "Setting one description.",
 		"setting2": "Setting two description.",
-		"another-setting": "And another setting.",
 	}
 	// Can also be passed in / overridden by a "-config-path" CLI flag
         filePath := "./samples/sample.json"
@@ -25,5 +24,5 @@ func main() {
 	}
 
 	// 4. Config values are accessible via a normal map.
-	fmt.Println(conf.Map)
+	fmt.Println("Config Map: ", conf.Map)
 }
