@@ -13,7 +13,7 @@ along with command line flags and env vars, at the same time.
 
 Given the following Go program,
 
-	package main
+package main
 
 	import (
 		"fmt"
@@ -28,17 +28,19 @@ Given the following Go program,
 		}
 
 		// 2. Create a new config instance.
-		conf := simpleconfig.NewConfig(opts, "sample.json")
-		// 3. Parse the options from both the JSON settings file and CLI flags.
-		err := conf.Parse()
+		config := simpleconfig.NewConfig(opts)
+		config.JsonPath = "sample.json" // Could also use "config-path" CLI flag
 
+		// 3. Parse the options from both the JSON settings file and CLI flags.
+		err := config.Parse()
 		if err != nil {
 			panic(err.Error())
 		}
 
 		// 4. Config values are accessible via a normal map.
-		fmt.Println(conf.Map)
+		fmt.Println("Config Map: ", config.Map)
 	}
+
 
 and sample.json containing,
 
@@ -53,10 +55,13 @@ With no CLI fags:
 
 	Config Map: map[setting1:Hello setting2:World]
 
-With "-another-setting=Josh" specified in the CLI flags:
+With "-setting2=Josh" specified in the CLI flags:
 
 	Config Map: map[setting1:Hello setting2:Josh]
 
+Once the Config is parsed, config.Map can be used just like a normal Go map.
+Note that the Config.Map has type "map[string]interface{}", which means you will
+need to use type assertion when using setting values.
 
 Also, a basic usage explanation will be shown if you pass the "-h" CLI flag. This
 can be customized by re-implementing the Config's Usage function, similar to how

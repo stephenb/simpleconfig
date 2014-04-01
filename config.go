@@ -15,14 +15,14 @@ If both are present, the command-line arg will be used.
 */
 type Config struct {
 	JsonPath string
+	Settings map[string]string      // map of {title: description}
 	Map      map[string]interface{} // map of {title: parsed value}
-	Options  map[string]string      // map of {title: description}
 	Usage    func()                 // Can be re-implemented if needed
 	flagSet  *flag.FlagSet
 }
 
-func NewConfig(opts map[string]string, jsonPath string) *Config {
-	conf := Config{Options: opts, JsonPath: jsonPath, Map: make(map[string]interface{})}
+func NewConfig(settings map[string]string) *Config {
+	conf := Config{Settings: settings, Map: make(map[string]interface{})}
 	fs := flag.NewFlagSet("simpleconfig", flag.ExitOnError)
 	conf.Usage = conf.usage
 	fs.Usage = conf.usage
@@ -34,9 +34,9 @@ func (conf *Config) Parse() error {
 	// Always support config-path flag
 	configPathFlag := conf.flagSet.String("config-path", "", "Path to JSON-formatted config file.")
 
-	// first, setup the flag options
+	// first, setup the flag settings
 	flagMap := make(map[string]*string)
-	for opt, desc := range conf.Options {
+	for opt, desc := range conf.Settings {
 		flagMap[opt] = conf.flagSet.String(opt, "", desc)
 	}
 	// parse them
@@ -59,7 +59,7 @@ func (conf *Config) Parse() error {
 	}
 
 	// override/set any vals that are set in env vars
-	for key, _ := range conf.Options {
+	for key, _ := range conf.Settings {
 		if os.Getenv(key) != "" {
 			conf.Map[key] = os.Getenv(key)
 		}
